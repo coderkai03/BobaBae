@@ -128,6 +128,9 @@ export default function Swipe() {
                 flexDirection="column"
                 justifyItems={'flex-start'}
               >
+                {currentUser.photo ? 
+                <img src={currentUser.photo} alt="bae" style={{ height: '30%', borderRadius: '1.25rem' }} /> :
+                <img src={'/broba.png'} alt="bae" style={{ height: '30%', borderRadius: '1.25rem' }} />}
                 <Typography variant="h3" color="black">
                   {currentUser.name}
                 </Typography>
