@@ -17,7 +17,7 @@ export default function Swipe() {
     const usersList = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     
     // Filter out the current user
-    const filteredUsers = usersList.filter(userData => userData.id !== user.id);
+    const filteredUsers = usersList.filter(userData => userData.id !== user.id).sort(() => Math.random() - 0.5);;
     console.log(filteredUsers);
     
     setUsersData(filteredUsers);
@@ -87,17 +87,22 @@ export default function Swipe() {
           padding={2}
         >
           {currentUser && (
-            <Box key={currentUser.id}>
+            <Box
+              key={currentUser.id}
+              display="flex"
+              flexDirection="column"
+              justifyItems={'flex-start'}
+              >
               <Typography variant="h3" color="black">
                 {currentUser.name}
               </Typography>
+              <Typography variant="h7" color="black">
+                Age: {currentUser.age}
+              </Typography>
+              <Typography variant="h7" color="black">
+                School: {currentUser.school}
+              </Typography>
               {/* <Typography variant="h7" color="black">
-                {currentUser.age}
-              </Typography>
-              <Typography variant="h7" color="black">
-                {currentUser.school}
-              </Typography>
-              <Typography variant="h7" color="black">
                 {currentUser.dietaryTags}
               </Typography> */}
             </Box>
