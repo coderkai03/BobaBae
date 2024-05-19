@@ -10,6 +10,7 @@ export default function Swipe() {
   const { signOut } = useAuth();
   const [usersData, setUsersData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  console.log(user)
 
   const fetchUsers = async () => {
     const usersCollection = collection(db, 'users');
@@ -78,18 +79,18 @@ export default function Swipe() {
       paddingTop={4}
       justifyContent="center"
       bgcolor="#f0ad52"
+      overflow="hidden"
     >
       {/* Sign Out Button */}
-      <Box
-        width="100%"
-        display="flex"
-        justifyContent="flex-end"
-        paddingRight={2}
-      >
-        <Button onClick={() => signOut()} variant="contained" color="primary">
+      
+        <Button onClick={() => signOut()} variant="contained" color="primary" sx={{
+          position: 'fixed',
+          top: '1rem',
+          right: '1rem',
+        }}>
           Sign Out
         </Button>
-      </Box>
+      
 
       <Stack
         spacing={2}
@@ -102,18 +103,20 @@ export default function Swipe() {
           Let's Swipe, {user.firstName}
         </Typography>
 
-        <Box display="flex" alignItems="center">
+        <Stack direction="row" alignItems="center" justifyContent="center" spacing={20}>
           {/* Left Image */}
-          <Box>
-            <img src="/xmark.png" onClick={handleNextUser} alt="pass" style={{ width: '100px', height: '100px' }} />
-          </Box>
+          <Button onClick={handleNextUser} sx={{
+            borderRadius: '100%',
+          }}>
+            <img src="/xmark.png" alt="pass" style={{ width: '100px', height: '100px' }} />
+          </Button>
 
           {/* Profile Stack */}
-          <Stack
+          {currentUser &&(<Stack
             direction="column"
             spacing={2}
-            alignItems="flex-start"
-            justifyContent="flex-start"
+            alignItems="center"
+            justifyContent="center"
             bgcolor={'white'}
             borderRadius={4}
             padding={2}
@@ -121,14 +124,8 @@ export default function Swipe() {
             width={400}
             height={600}
           >
-            {currentUser && (
-              <Box
-                key={currentUser.id}
-                display="flex"
-                flexDirection="column"
-                justifyItems={'flex-start'}
-              >
-                {currentUser.photo ? 
+
+                {currentUser.hasPhoto ? 
                 <img src={currentUser.photo} alt="bae" style={{ height: '30%', borderRadius: '1.25rem' }} /> :
                 <img src={'/broba.png'} alt="bae" style={{ height: '30%', borderRadius: '1.25rem' }} />}
                 <Typography variant="h3" color="black">
@@ -143,15 +140,16 @@ export default function Swipe() {
                 {/* <Typography variant="h7" color="black">
                   {currentUser.dietaryTags}
                 </Typography> */}
-              </Box>
-            )}
-          </Stack>
+
+          </Stack>)}
 
           {/* Right Image */}
-          <Box>
-            <img src="/checkmark.png" onClick={handleMatch} alt="match" style={{ width: '100px', height: '100px' }} />
-          </Box>
-        </Box>
+          <Button onClick={handleMatch} sx={{
+            borderRadius: '100%',
+          }}>
+            <img src="/checkmark.png"alt="match" style={{ width: '100px', height: '100px' }} />
+          </Button>
+        </Stack>
       </Stack>
 
       {/* Menu Buttons */}
@@ -162,16 +160,31 @@ export default function Swipe() {
         justifyContent="center"
         padding={2}
       >
-        <Button href='/bucket' variant="contained" color="primary" sx={{ borderRadius: '100%', textAlign: 'center' }}>
+        <MenuButton href='/bucket'>
           Baes
-        </Button>
-        <Button href='/swipe' variant="contained" color="primary" sx={{ borderRadius: '100%', textAlign: 'center' }}>
-          lets<br/>swipe
-        </Button>
-        <Button href='/profile' variant='contained' color="primary" sx={{ borderRadius: '100%', textAlign: 'center' }}>
+        </MenuButton>
+        <MenuButton href='/swipe' >
+          Lets<br/>swipe
+        </MenuButton>
+        <MenuButton href='/profile' >
           Profile
-        </Button>
+        </MenuButton>
       </Stack>
     </Box>
   );
 }
+
+const MenuButton = ({ href, children }) => (
+  <Button href
+    variant="contained"
+    color="primary"
+    sx={{
+      borderRadius: '100%',
+      textAlign: 'center',
+      height: '100px',
+      width: '100px',
+    }}
+  >
+    {children}
+  </Button>
+);
