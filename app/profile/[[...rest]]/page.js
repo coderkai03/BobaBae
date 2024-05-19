@@ -10,7 +10,7 @@ export default function Profile() {
       alignItems="flex-start"
       paddingTop={4}
       justifyContent="center"
-      bgcolor="#f0ad52"
+      bgcolor="#EDEFD8"
     >
       <Stack
         spacing={2}
@@ -18,15 +18,15 @@ export default function Profile() {
         alignItems="center"
         justifyContent="center"
       >
-        <Typography variant="h2" color="black">
-          Profile
+        <Typography variant="h2" color="#E59E45">
+          My Profile
         </Typography>
         <Stack
           direction="column"
           spacing={2}
           alignItems="flex-start"
           justifyContent="flex-start"
-          bgcolor={'white'}
+          bgcolor={'#f0ad52'}
           borderRadius={4}
           padding={2}
         >
@@ -36,7 +36,7 @@ export default function Profile() {
               elements: {
                 cardBox: {
                   width: 800,
-                  height: 600,
+                  height: 500,
                 },
               },
             }}

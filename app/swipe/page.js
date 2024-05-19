@@ -82,12 +82,22 @@ export default function Swipe() {
       overflow="hidden"
     >
       {/* Sign Out Button */}
-      
-        <Button onClick={() => signOut()} variant="contained" color="primary" sx={{
-          position: 'fixed',
-          top: '1rem',
-          right: '1rem',
-        }}>
+      <Box
+        width="100%"
+        display="flex"
+        justifyContent="flex-end"
+        paddingRight={5}
+      >
+        <Button onClick={() => signOut()} variant="contained2" color="primary"
+          sx={{
+            backgroundColor: '#2b0303',
+            transition: 'background-color 0.3s ease',
+            color: 'white',
+            '&:hover':{
+              backgroundColor: '#975629',
+            },
+          }}
+        >
           Sign Out
         </Button>
       
@@ -99,17 +109,26 @@ export default function Swipe() {
         justifyContent="center"
         flexGrow={1}
       >
-        <Typography variant="h2" color="black">
+        <Typography variant="h2" color="black" paddingBottom="40px">  
           Let's Swipe, {user.firstName}
         </Typography>
 
         <Stack direction="row" alignItems="center" justifyContent="center" spacing={20}>
           {/* Left Image */}
-          <Button onClick={handleNextUser} sx={{
-            borderRadius: '100%',
-          }}>
-            <img src="/xmark.png" alt="pass" style={{ width: '100px', height: '100px' }} />
-          </Button>
+          <Box>
+            <img 
+              src="/xmark.png" 
+              onClick={handleNextUser} 
+              alt="pass" 
+              style={{ 
+                width: '100px', 
+                height: '100px',
+                margin: '0 50px 0 0',
+                transition: 'transform 0.3s ease',
+                }} 
+              className="hovered-image"
+            />
+          </Box>
 
           {/* Profile Stack */}
           {currentUser &&(<Stack
@@ -122,12 +141,30 @@ export default function Swipe() {
             padding={2}
             marginX={2}
             width={400}
-            height={600}
+            height={500}
+            sx={{
+              boxShadow: '0 0 40px rgba(0, 0, 0, 25%)',
+            }}
           >
 
-                {currentUser.hasPhoto ? 
-                <img src={currentUser.photo} alt="bae" style={{ height: '30%', borderRadius: '1.25rem' }} /> :
-                <img src={'/broba.png'} alt="bae" style={{ height: '30%', borderRadius: '1.25rem' }} />}
+            <div style={{width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <img
+                src="/bobabae.png"
+                alt="pass"
+                style={{
+                  width: '250px',
+                  height: 'auto',
+                }}
+              />
+            </div>
+            
+            {currentUser && (
+              <Box
+                key={currentUser.id}
+                display="flex"
+                flexDirection="column"
+                justifyItems={'flex-start'}
+              >
                 <Typography variant="h3" color="black">
                   {currentUser.name}
                 </Typography>
@@ -140,16 +177,27 @@ export default function Swipe() {
                 {/* <Typography variant="h7" color="black">
                   {currentUser.dietaryTags}
                 </Typography> */}
-
-          </Stack>)}
+              </Box>
+            )}
+            {/* <Button onClick={handleNextUser}>Next User</Button> */}
+          </Stack>
 
           {/* Right Image */}
-          <Button onClick={handleMatch} sx={{
-            borderRadius: '100%',
-          }}>
-            <img src="/checkmark.png"alt="match" style={{ width: '100px', height: '100px' }} />
-          </Button>
-        </Stack>
+          <Box>
+            <img 
+              src="/checkmark.png" 
+              onClick={handleMatch} 
+              alt="match" 
+              style={{ 
+                width: '100px', 
+                height: '100px',
+                margin: '0 0 0 50px',
+                transition: 'transform 0.3s ease',
+                }} 
+              className="hovered-image"
+            />
+          </Box>
+        </Box>
       </Stack>
 
       {/* Menu Buttons */}
@@ -159,14 +207,60 @@ export default function Swipe() {
         alignItems="center"
         justifyContent="center"
         padding={2}
+        margin = {5}
       >
-        <MenuButton href='/bucket'>
+        <Button 
+          href='/bucket' 
+          variant="contained" 
+          color="primary" 
+          sx={{ 
+            borderRadius: '50%', 
+            textAlign: 'center',
+            width: '100px',
+            height: '100px',
+            minwidth: 'auto',
+            backgroundColor: '#975629',
+            '&:hover':{
+              backgroundColor: '#2b0303',
+            },
+            }}
+        >
           Baes
-        </MenuButton>
-        <MenuButton href='/swipe' >
-          Lets<br/>swipe
-        </MenuButton>
-        <MenuButton href='/profile' >
+        </Button>
+        <Button
+          href='/swipe' 
+          variant="contained" 
+          color="primary" 
+          sx={{
+            borderRadius: '50%', 
+            textAlign: 'center',
+            width: '100px',
+            height: '100px',
+            minwidth: 'auto',
+            backgroundColor: '#975629',
+            '&:hover':{
+              backgroundColor: '#2b0303',
+            },
+          }}
+        >
+          lets<br/>swipe
+        </Button>
+        <Button 
+          href='/profile' 
+          variant='contained' 
+          color="primary" 
+          sx={{ 
+            borderRadius: '50%', 
+            textAlign: 'center',
+            width: '100px',
+            height: '100px',
+            minwidth: 'auto',
+            backgroundColor: '#975629',
+            '&:hover':{
+              backgroundColor: '#2b0303',
+            }, 
+            }}
+        >
           Profile
         </MenuButton>
       </Stack>
