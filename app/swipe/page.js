@@ -92,6 +92,15 @@ export default function Swipe() {
 
           {/* Profile Stack */}
           <Stack
+            // direction="column"
+            // spacing={2}
+            // alignItems="flex-start"
+            // justifyContent="flex-start"
+            // bgcolor={'white'}
+            // borderRadius={4}
+            // padding={2}
+            // marginX={2}
+            
             direction="column"
             spacing={2}
             alignItems="flex-start"
@@ -100,7 +109,11 @@ export default function Swipe() {
             borderRadius={4}
             padding={2}
             marginX={2}
+            width={400}
+            height={500}
           >
+            <img src="/bobabae.png" alt="pass" style={{ width: '250px', height: 'auto', justifyContent: 'center', alignItems: 'center'}} />
+            
             {currentUser && (
               <Box
                 key={currentUser.id}
@@ -122,7 +135,7 @@ export default function Swipe() {
                 </Typography> */}
               </Box>
             )}
-            <Button onClick={handleNextUser}>Next User</Button>
+            {/* <Button onClick={handleNextUser}>Next User</Button> */}
           </Stack>
 
           {/* Right Image */}

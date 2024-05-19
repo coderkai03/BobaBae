@@ -11,8 +11,6 @@ import { db } from '@/firebaseConfig';
 
 // Initialize Firebase app
 
-
-
 export default function Home() {
   const router = useRouter();
   const { isSignedIn, user } = useUser();
