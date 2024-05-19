@@ -118,6 +118,8 @@ export default function Swipe() {
             borderRadius={4}
             padding={2}
             marginX={2}
+            width={400}
+            height={600}
           >
             {currentUser && (
               <Box
@@ -140,7 +142,6 @@ export default function Swipe() {
                 </Typography> */}
               </Box>
             )}
-            <Button onClick={handleNextUser}>Next User</Button>
           </Stack>
 
           {/* Right Image */}
