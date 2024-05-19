@@ -1,23 +1,54 @@
-"use client";
+"use client"
 import * as React from 'react';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebaseConfig';
+
+// Initialize Firebase app
+
+
 
 export default function Home() {
   const router = useRouter();
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, user } = useUser();
 
   React.useEffect(() => {
-    // Redirect to '/Home' if the user is signed in
-    if (isSignedIn) {
-      router.push('/swipe');
-    }
-  }, [isSignedIn, router]);
+    const checkUserData = async () => {
+      console.log("isSignedIn:", isSignedIn);
+      console.log("userId:", user?.id);
+      
+      if (isSignedIn && user?.id) {
+        console.log("User ID:", user.id);
+        const userId = user.id;
+        const userDocRef = doc(db, 'users', userId);
+        
+        try {
+          const userDocSnap = await getDoc(userDocRef);
+          console.log("User document:", userDocSnap.data());
+          
+          if (!userDocSnap.exists()) {
+            // User document doesn't exist, create one
+            await setDoc(userDocRef, { name: user.fullName });
+          }
+          
+          // Redirect to '/swipe'
+          router.push('/swipe');
+        } catch (error) {
+          console.error("Error fetching user document:", error);
+        }
+      } else {
+        console.log("Not signed in");
+      }
+    };
+  
+    checkUserData();
+  }, [isSignedIn, router, user]);
+  
 
   return (
     <Box>
