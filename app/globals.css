@@ -6,6 +6,10 @@
   padding: 0;
   margin: 0;
   font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+  /* overflow-y: hidden; */
 }
 
 body {

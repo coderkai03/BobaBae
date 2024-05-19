@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 
 const theme = createTheme({
   typography: {
@@ -22,7 +21,7 @@ const theme = createTheme({
     },
     h5:{
       fontFamily: 'Rubik Mono One, sans-serif',
-      fontSize: '70px',
+      fontSize: '50px',
       color: '#2B0303',
       WebkitTextStroke: '2px #EDEFD8'
     },
@@ -33,6 +32,11 @@ const theme = createTheme({
       textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
       marginTop: '-60px',
       marginBottom: '20px',
+    },
+    h6:{
+      fontFamily: 'Poppins',
+      fontSize: '20px',
+      color: '#EDEFD8',
     },
     p:{
       fontFamily: 'Poppins',
@@ -68,11 +72,11 @@ export default function Home() {
             }
           `}</style>
 
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h3" gutterBottom marginBottom={'0'}>
           Bobabae
         </Typography>
 
-        <Box display={"flex"}>
+        <Box display={"flex"} >
           <Stack direction="row" spacing={2}>
 
             <Button href='/swipe' sx={{color: '#2B0303', ':hover':{backgroundColor:'transparent', border:'2px solid #2B0303', borderRadius: '8px'}}}>Home</Button>
@@ -108,48 +112,62 @@ export default function Home() {
         {/* body */}
         <Box 
           sx={{
-            borderTopLeftRadius: '300px',
-            borderTopRightRadius: '300px',
+            borderTopLeftRadius: '200px',
+            borderTopRightRadius: '200px',
           }}
           bgcolor={'#edefd8'} 
           width={'100%'} 
-          height={'100%'} 
+          height={'700%'} 
           display={'flex'} 
           flexDirection={'column'} 
           justifyContent={'center'} 
           alignItems={'center'} 
-          style={{ marginTop: '90px'}}
+          style={{ marginTop: '70px'}}
         >
           
-          <Typography variant='h1'>DISCOVER MORE</Typography>
+          <Typography variant='h1' mt={'60px'}
+            style = {{ overflowY: 'hidden'}}>
+            DISCOVER MORE
+          </Typography>
           
           <img src="/bearhacks.jpg" alt="bearhacks" style={{ height: '50%', maxRadius: '50%', borderRadius: '1.25rem', boxShadow: '0 0px 30px rgb(151, 86, 41)' }} />
           
           <Box 
-            width={'100px'} 
-            height={'100px'} 
+            // width={'100px'} 
+            // height={'100px'} 
             display={'flex'} 
             flexDirection={'row'} 
             justifyContent={'center'} 
             alignItems={'center'}
+            // mt={5}
           >
             
-            <img width='100%' src="/icon.png" alt="bearhacks" 
-              display={'flex'}
-              sx={{
-                marginTop:'100px',
-                marginBottom:'100px',
+            <img src="/icon.png" alt="icon" 
+              // display={'flex'}
+              // sx={{
+              //   width: '100px',
+              //   height: '100px',
+              //   marginTop:'100px',
+              //   marginBottom:'100px',
+              // }}
+              style={{
+                width: '100px', 
+                height: 'auto', 
+                marginTop: '10px',
+                marginRight: '20px', 
+                marginBottom: '50px',
               }}
             />
             
-            <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} marginTop={'20px'}>
-              <Typography  bgcolor={'#ffffff'} borderRadius={5} variant='h6' color='black'>We are a </Typography>
-              <Typography variant='body1' color='white'>Tagline goes here</Typography>
+            <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} >
+              <Typography borderRadius={5} variant='h6' color='black'>
+                Bobabae is a social app where you can find a buddy and grab boba together. 
+              </Typography>
             </Box>
           </Box>
           
         </Box>
-        <img src="/Group5.png" alt="boba" style={{ width: '100%', bottom: '0', marginTop: '-180px'}} />
+        <img src="/Group5.png" alt="boba" style={{ width: '100%', height: '100%', bottom: '0', marginTop: '-70px'}} />
       </Box>
 
       {/* footer */}
