@@ -66,9 +66,18 @@ export default function Swipe() {
         width="100%"
         display="flex"
         justifyContent="flex-end"
-        paddingRight={2}
+        paddingRight={5}
       >
-        <Button onClick={() => signOut()} variant="contained" color="primary">
+        <Button onClick={() => signOut()} variant="contained2" color="primary"
+          sx={{
+            backgroundColor: '#2b0303',
+            transition: 'background-color 0.3s ease',
+            color: 'white',
+            '&:hover':{
+              backgroundColor: '#975629',
+            },
+          }}
+        >
           Sign Out
         </Button>
       </Box>
@@ -80,27 +89,29 @@ export default function Swipe() {
         justifyContent="center"
         flexGrow={1}
       >
-        <Typography variant="h2" color="black">
+        <Typography variant="h2" color="black" paddingBottom="40px">  
           Let's Swipe, {user.firstName}
         </Typography>
 
         <Box display="flex" alignItems="center">
           {/* Left Image */}
           <Box>
-            <img src="/xmark.png" onClick={handleNextUser} alt="pass" style={{ width: '100px', height: '100px' }} />
+            <img 
+              src="/xmark.png" 
+              onClick={handleNextUser} 
+              alt="pass" 
+              style={{ 
+                width: '100px', 
+                height: '100px',
+                margin: '0 50px 0 0',
+                transition: 'transform 0.3s ease',
+                }} 
+              className="hovered-image"
+            />
           </Box>
 
           {/* Profile Stack */}
           <Stack
-            // direction="column"
-            // spacing={2}
-            // alignItems="flex-start"
-            // justifyContent="flex-start"
-            // bgcolor={'white'}
-            // borderRadius={4}
-            // padding={2}
-            // marginX={2}
-            
             direction="column"
             spacing={2}
             alignItems="flex-start"
@@ -111,8 +122,21 @@ export default function Swipe() {
             marginX={2}
             width={400}
             height={500}
+            sx={{
+              boxShadow: '0 0 40px rgba(0, 0, 0, 25%)',
+            }}
           >
-            <img src="/bobabae.png" alt="pass" style={{ width: '250px', height: 'auto', justifyContent: 'center', alignItems: 'center'}} />
+
+            <div style={{width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <img
+                src="/bobabae.png"
+                alt="pass"
+                style={{
+                  width: '250px',
+                  height: 'auto',
+                }}
+              />
+            </div>
             
             {currentUser && (
               <Box
@@ -140,7 +164,18 @@ export default function Swipe() {
 
           {/* Right Image */}
           <Box>
-            <img src="/checkmark.png" onClick={handleMatch} alt="match" style={{ width: '100px', height: '100px' }} />
+            <img 
+              src="/checkmark.png" 
+              onClick={handleMatch} 
+              alt="match" 
+              style={{ 
+                width: '100px', 
+                height: '100px',
+                margin: '0 0 0 50px',
+                transition: 'transform 0.3s ease',
+                }} 
+              className="hovered-image"
+            />
           </Box>
         </Box>
       </Stack>
@@ -152,14 +187,60 @@ export default function Swipe() {
         alignItems="center"
         justifyContent="center"
         padding={2}
+        margin = {5}
       >
-        <Button href='/bucket' variant="contained" color="primary" sx={{ borderRadius: '100%', textAlign: 'center' }}>
+        <Button 
+          href='/bucket' 
+          variant="contained" 
+          color="primary" 
+          sx={{ 
+            borderRadius: '50%', 
+            textAlign: 'center',
+            width: '100px',
+            height: '100px',
+            minwidth: 'auto',
+            backgroundColor: '#975629',
+            '&:hover':{
+              backgroundColor: '#2b0303',
+            },
+            }}
+        >
           Baes
         </Button>
-        <Button href='/swipe' variant="contained" color="primary" sx={{ borderRadius: '100%', textAlign: 'center' }}>
+        <Button
+          href='/swipe' 
+          variant="contained" 
+          color="primary" 
+          sx={{
+            borderRadius: '50%', 
+            textAlign: 'center',
+            width: '100px',
+            height: '100px',
+            minwidth: 'auto',
+            backgroundColor: '#975629',
+            '&:hover':{
+              backgroundColor: '#2b0303',
+            },
+          }}
+        >
           lets<br/>swipe
         </Button>
-        <Button href='/profile' variant='contained' color="primary" sx={{ borderRadius: '100%', textAlign: 'center' }}>
+        <Button 
+          href='/profile' 
+          variant='contained' 
+          color="primary" 
+          sx={{ 
+            borderRadius: '50%', 
+            textAlign: 'center',
+            width: '100px',
+            height: '100px',
+            minwidth: 'auto',
+            backgroundColor: '#975629',
+            '&:hover':{
+              backgroundColor: '#2b0303',
+            }, 
+            }}
+        >
           Profile
         </Button>
       </Stack>
