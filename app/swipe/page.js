@@ -2,7 +2,7 @@
 import { Box, Stack, Typography, Button } from '@mui/material';
 import { useUser, useAuth } from '@clerk/clerk-react';
 import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { updateDoc, doc, collection, getDocs, arrayUnion } from 'firebase/firestore';
 import { db } from '@/firebaseConfig';
 
 export default function Swipe() {
@@ -34,9 +34,27 @@ export default function Swipe() {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % usersData.length);
   };
 
-  const handleMatch = () => {
+  const handleMatch = async () => { 
     console.log('Matched with: ', currentUser);
-    handleNextUser()
+    const matchedUser = usersData[currentIndex];
+    const matchedUserId = doc(db, 'users', matchedUser.id);
+    
+    // Add matchedUserId to the current user's matches array in Firebase
+    const userRef = doc(db, 'users', user.id);
+    try {
+      await updateDoc(userRef, {
+        matches: arrayUnion(matchedUserId)
+      }, { merge: true }); // Add { merge: true } to merge the new data with existing fields
+      console.log('Document update successful');
+    } catch (error) {
+      console.log('Document update failed:', error);
+    }
+    
+    handleNextUser();
+
+    // Log the user's matches
+    const userMatches = user.matches || [];
+    console.log('User matches:', userMatches);
   };
 
   // Render loading state while user data is being fetched
