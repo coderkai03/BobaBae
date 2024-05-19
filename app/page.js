@@ -33,7 +33,7 @@ export default function Home() {
           
           if (!userDocSnap.exists()) {
             // User document doesn't exist, create one
-            await setDoc(userDocRef, { name: user.fullName });
+            await setDoc(userDocRef, { name: user.fullName, users: [] });
           }
           
           // Redirect to '/swipe'

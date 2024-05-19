@@ -17,7 +17,7 @@ export default function Swipe() {
     const usersList = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     
     // Filter out the current user
-    const filteredUsers = usersList.filter(userData => userData.id !== user.id).sort(() => Math.random() - 0.5);;
+    const filteredUsers = usersList.filter(userData => userData.id !== user.id).sort(() => Math.random() - 0.5);
     console.log(filteredUsers);
     
     setUsersData(filteredUsers);
@@ -30,7 +30,13 @@ export default function Swipe() {
   }, [user, isLoading]);
 
   const handleNextUser = () => {
+    console.log('Skipped: ', currentUser);
     setCurrentIndex((prevIndex) => (prevIndex + 1) % usersData.length);
+  };
+
+  const handleMatch = () => {
+    console.log('Matched with: ', currentUser);
+    handleNextUser()
   };
 
   // Render loading state while user data is being fetched
@@ -77,38 +83,72 @@ export default function Swipe() {
         <Typography variant="h2" color="black">
           Let's Swipe, {user.firstName}
         </Typography>
-        <Stack
-          direction="column"
-          spacing={2}
-          alignItems="flex-start"
-          justifyContent="flex-start"
-          bgcolor={'white'}
-          borderRadius={4}
-          padding={2}
-        >
-          {currentUser && (
-            <Box
-              key={currentUser.id}
-              display="flex"
-              flexDirection="column"
-              justifyItems={'flex-start'}
+
+        <Box display="flex" alignItems="center">
+          {/* Left Image */}
+          <Box>
+            <img src="/xmark.png" onClick={handleNextUser} alt="pass" style={{ width: '100px', height: '100px' }} />
+          </Box>
+
+          {/* Profile Stack */}
+          <Stack
+            direction="column"
+            spacing={2}
+            alignItems="flex-start"
+            justifyContent="flex-start"
+            bgcolor={'white'}
+            borderRadius={4}
+            padding={2}
+            marginX={2}
+          >
+            {currentUser && (
+              <Box
+                key={currentUser.id}
+                display="flex"
+                flexDirection="column"
+                justifyItems={'flex-start'}
               >
-              <Typography variant="h3" color="black">
-                {currentUser.name}
-              </Typography>
-              <Typography variant="h7" color="black">
-                Age: {currentUser.age}
-              </Typography>
-              <Typography variant="h7" color="black">
-                School: {currentUser.school}
-              </Typography>
-              {/* <Typography variant="h7" color="black">
-                {currentUser.dietaryTags}
-              </Typography> */}
-            </Box>
-          )}
-          <Button onClick={handleNextUser}>Next User</Button>
-        </Stack>
+                <Typography variant="h3" color="black">
+                  {currentUser.name}
+                </Typography>
+                <Typography variant="h7" color="black">
+                  Age: {currentUser.age}
+                </Typography>
+                <Typography variant="h7" color="black">
+                  School: {currentUser.school}
+                </Typography>
+                {/* <Typography variant="h7" color="black">
+                  {currentUser.dietaryTags}
+                </Typography> */}
+              </Box>
+            )}
+            <Button onClick={handleNextUser}>Next User</Button>
+          </Stack>
+
+          {/* Right Image */}
+          <Box>
+            <img src="/checkmark.png" onClick={handleMatch} alt="match" style={{ width: '100px', height: '100px' }} />
+          </Box>
+        </Box>
+      </Stack>
+
+      {/* Menu Buttons */}
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        justifyContent="center"
+        padding={2}
+      >
+        <Button href='/bucket' variant="contained" color="primary" sx={{ borderRadius: '100%', textAlign: 'center' }}>
+          Baes
+        </Button>
+        <Button href='/swipe' variant="contained" color="primary" sx={{ borderRadius: '100%', textAlign: 'center' }}>
+          lets<br/>swipe
+        </Button>
+        <Button href='/profile' variant='contained' color="primary" sx={{ borderRadius: '100%', textAlign: 'center' }}>
+          Profile
+        </Button>
       </Stack>
     </Box>
   );
