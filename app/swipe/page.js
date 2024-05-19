@@ -1,63 +1,249 @@
-import {Box, Stack, Typography} from '@mui/material'
+"use client"
+import { Box, Stack, Typography, Button } from '@mui/material';
+import { useUser, useAuth } from '@clerk/clerk-react';
+import { useState, useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/firebaseConfig';
 
 export default function Swipe() {
+  const { user, isLoading } = useUser();
+  const { signOut } = useAuth();
+  const [usersData, setUsersData] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const fetchUsers = async () => {
+    const usersCollection = collection(db, 'users');
+    const usersSnapshot = await getDocs(usersCollection);
+    const usersList = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    
+    // Filter out the current user
+    const filteredUsers = usersList.filter(userData => userData.id !== user.id).sort(() => Math.random() - 0.5);
+    console.log(filteredUsers);
+    
+    setUsersData(filteredUsers);
+  };
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      fetchUsers();
+    }
+  }, [user, isLoading]);
+
+  const handleNextUser = () => {
+    console.log('Skipped: ', currentUser);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % usersData.length);
+  };
+
+  const handleMatch = () => {
+    console.log('Matched with: ', currentUser);
+    handleNextUser()
+  };
+
+  // Render loading state while user data is being fetched
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (usersData.length === 0) {
+    return <div>No users found</div>;
+  }
+
+  const currentUser = usersData[currentIndex];
+
   return (
     <Box
       width="100vw"
       height="100vh"
       display="flex"
-      alignItems="flex-start"
+      flexDirection="column"
+      alignItems="center"
       paddingTop={4}
       justifyContent="center"
       bgcolor="#f0ad52"
     >
+      {/* Sign Out Button */}
+      <Box
+        width="100%"
+        display="flex"
+        justifyContent="flex-end"
+        paddingRight={5}
+      >
+        <Button onClick={() => signOut()} variant="contained2" color="primary"
+          sx={{
+            backgroundColor: '#2b0303',
+            transition: 'background-color 0.3s ease',
+            color: 'white',
+            '&:hover':{
+              backgroundColor: '#975629',
+            },
+          }}
+        >
+          Sign Out
+        </Button>
+      </Box>
+
       <Stack
         spacing={2}
         direction="column"
         alignItems="center"
         justifyContent="center"
+        flexGrow={1}
       >
-        <Typography variant="h2" color="black">
-          Let's Swipe
+        <Typography variant="h2" color="black" paddingBottom="40px">  
+          Let's Swipe, {user.firstName}
         </Typography>
-        <Stack
-          direction="column"
-          spacing={2}
-          alignItems="flex-start"
-          justifyContent="flex-start"
-          bgcolor={'white'}
-          borderRadius={4}
-          padding={2}
-        >
-          <Box
+
+        <Box display="flex" alignItems="center">
+          {/* Left Image */}
+          <Box>
+            <img 
+              src="/xmark.png" 
+              onClick={handleNextUser} 
+              alt="pass" 
+              style={{ 
+                width: '100px', 
+                height: '100px',
+                margin: '0 50px 0 0',
+                transition: 'transform 0.3s ease',
+                }} 
+              className="hovered-image"
+            />
+          </Box>
+
+          {/* Profile Stack */}
+          <Stack
+            direction="column"
+            spacing={2}
+            alignItems="flex-start"
+            justifyContent="flex-start"
+            bgcolor={'white'}
+            borderRadius={4}
+            padding={2}
+            marginX={2}
             width={400}
-            height={400}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            borderRadius={2}
+            height={500}
             sx={{
-              background: 'linear-gradient(180deg, #EDEFD8 79.95%, #FFF 100%)',
+              boxShadow: '0 0 40px rgba(0, 0, 0, 25%)',
             }}
           >
-            <Typography variant="h7" color="black">
-              Boba Pic
-            </Typography>
+
+            <div style={{width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <img
+                src="/bobabae.png"
+                alt="pass"
+                style={{
+                  width: '250px',
+                  height: 'auto',
+                }}
+              />
+            </div>
+            
+            {currentUser && (
+              <Box
+                key={currentUser.id}
+                display="flex"
+                flexDirection="column"
+                justifyItems={'flex-start'}
+              >
+                <Typography variant="h3" color="black">
+                  {currentUser.name}
+                </Typography>
+                <Typography variant="h7" color="black">
+                  Age: {currentUser.age}
+                </Typography>
+                <Typography variant="h7" color="black">
+                  School: {currentUser.school}
+                </Typography>
+                {/* <Typography variant="h7" color="black">
+                  {currentUser.dietaryTags}
+                </Typography> */}
+              </Box>
+            )}
+            {/* <Button onClick={handleNextUser}>Next User</Button> */}
+          </Stack>
+
+          {/* Right Image */}
+          <Box>
+            <img 
+              src="/checkmark.png" 
+              onClick={handleMatch} 
+              alt="match" 
+              style={{ 
+                width: '100px', 
+                height: '100px',
+                margin: '0 0 0 50px',
+                transition: 'transform 0.3s ease',
+                }} 
+              className="hovered-image"
+            />
           </Box>
-          <Typography variant="h3" color="black">
-            Boba Name
-          </Typography>
-          <Typography variant="h7" color="black">
-            Shop Name
-          </Typography>
-          <Typography variant="h7" color="black">
-            Location
-          </Typography>
-          <Typography variant="h7" color="black">
-            Dietary Tags
-          </Typography>
-        </Stack>
+        </Box>
+      </Stack>
+
+      {/* Menu Buttons */}
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        justifyContent="center"
+        padding={2}
+        margin = {5}
+      >
+        <Button 
+          href='/bucket' 
+          variant="contained" 
+          color="primary" 
+          sx={{ 
+            borderRadius: '50%', 
+            textAlign: 'center',
+            width: '100px',
+            height: '100px',
+            minwidth: 'auto',
+            backgroundColor: '#975629',
+            '&:hover':{
+              backgroundColor: '#2b0303',
+            },
+            }}
+        >
+          Baes
+        </Button>
+        <Button
+          href='/swipe' 
+          variant="contained" 
+          color="primary" 
+          sx={{
+            borderRadius: '50%', 
+            textAlign: 'center',
+            width: '100px',
+            height: '100px',
+            minwidth: 'auto',
+            backgroundColor: '#975629',
+            '&:hover':{
+              backgroundColor: '#2b0303',
+            },
+          }}
+        >
+          lets<br/>swipe
+        </Button>
+        <Button 
+          href='/profile' 
+          variant='contained' 
+          color="primary" 
+          sx={{ 
+            borderRadius: '50%', 
+            textAlign: 'center',
+            width: '100px',
+            height: '100px',
+            minwidth: 'auto',
+            backgroundColor: '#975629',
+            '&:hover':{
+              backgroundColor: '#2b0303',
+            }, 
+            }}
+        >
+          Profile
+        </Button>
       </Stack>
     </Box>
-  )
+  );
 }

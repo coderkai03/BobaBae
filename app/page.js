@@ -1,9 +1,14 @@
 "use client"
 import * as React from 'react';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+
+import { useRouter } from 'next/navigation';
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebaseConfig';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -47,6 +52,42 @@ const theme = createTheme({
 });
 
 export default function Home() {
+  const router = useRouter();
+  const { isSignedIn, user } = useUser();
+
+  React.useEffect(() => {
+    const checkUserData = async () => {
+      console.log("isSignedIn:", isSignedIn);
+      console.log("userId:", user?.id);
+      
+      if (isSignedIn && user?.id) {
+        console.log("User ID:", user.id);
+        const userId = user.id;
+        const userDocRef = doc(db, 'users', userId);
+        
+        try {
+          const userDocSnap = await getDoc(userDocRef);
+          console.log("User document:", userDocSnap.data());
+          
+          if (!userDocSnap.exists()) {
+            // User document doesn't exist, create one
+            await setDoc(userDocRef, { name: user.fullName, users: [] });
+          }
+          
+          // Redirect to '/swipe'
+          router.push('/swipe');
+        } catch (error) {
+          console.error("Error fetching user document:", error);
+        }
+      } else {
+        console.log("Not signed in");
+      }
+    };
+  
+    checkUserData();
+  }, [isSignedIn, router, user]);
+  
+
   return (
     <ThemeProvider theme={theme}>
     {/* home page */}
@@ -165,7 +206,6 @@ export default function Home() {
               </Typography>
             </Box>
           </Box>
-          
         </Box>
         <img src="/Group5.png" alt="boba" style={{ width: '100%', height: '100%', bottom: '0', marginTop: '-70px'}} />
       </Box>
