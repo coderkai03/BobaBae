@@ -1,53 +1,53 @@
-"use client"
-import { Box, Grid, Stack, Typography } from '@mui/material';
-import { useUser } from '@clerk/clerk-react';
-import { useEffect, useState } from 'react';
-import { collection, doc, getDoc } from 'firebase/firestore';
-import { db } from '@/firebaseConfig';
+'use client'
+import {Box, Grid, Stack, Typography} from '@mui/material'
+import {useUser} from '@clerk/clerk-react'
+import {useEffect, useState} from 'react'
+import {collection, doc, getDoc} from 'firebase/firestore'
+import {db} from '@/firebaseConfig'
 
 export default function Bucket() {
-  const { user, isLoading } = useUser();
-  const [matchesData, setMatchesData] = useState([]);
+  const {user, isLoading} = useUser()
+  const [matchesData, setMatchesData] = useState([])
 
   useEffect(() => {
     const fetchMatchesData = async () => {
       if (isLoading) {
-        console.log('User object is still loading.');
-        return;
+        console.log('User object is still loading.')
+        return
       }
 
       if (!user) {
-        console.log('User object is null or undefined.');
-        return;
+        console.log('User object is null or undefined.')
+        return
       }
 
       const id = user.id
       // Get collection users, document id, and field matches from firebase
       const matches = await getDoc(doc(db, 'users', id)).then((doc) => {
         if (doc.exists()) {
-          return doc.data().matches;
+          return doc.data().matches
         }
-        return [];
-      });
+        return []
+      })
 
       const matchesProfiles = await Promise.all(
         matches.map(async (docRef) => {
           try {
-            const matchSnapshot = await getDoc(docRef);
-            const matchData = matchSnapshot.data();
-            return matchData;
+            const matchSnapshot = await getDoc(docRef)
+            const matchData = matchSnapshot.data()
+            return matchData
           } catch (error) {
-            console.error('Error fetching match:', error);
-            return null; // Handle the error gracefully
+            console.error('Error fetching match:', error)
+            return null // Handle the error gracefully
           }
-        })
-      );
+        }),
+      )
 
-      setMatchesData(matchesProfiles.filter(match => match !== null)); // Remove null entries
-    };
+      setMatchesData(matchesProfiles.filter((match) => match !== null)) // Remove null entries
+    }
 
-    fetchMatchesData();
-  }, [user, isLoading]);
+    fetchMatchesData()
+  }, [user, isLoading])
 
   return (
     <Box
@@ -70,7 +70,7 @@ export default function Bucket() {
         <Typography variant="h2" color="black">
           Boba Bucket List
         </Typography>
-        <Grid container spacing={2} sx={{ width: '80%', height: '60%' }}>
+        <Grid container spacing={2} sx={{width: '80%', height: '60%'}}>
           {matchesData.map((matchData, index) => (
             <Grid
               item
@@ -95,15 +95,7 @@ export default function Bucket() {
                 borderRadius={8}
                 padding={3}
               >
-                <Box
-                  height="200px"
-                  width="40%"
-                  borderRadius={4}
-                  sx={{
-                    background:
-                      'linear-gradient(180deg, #EDEFD8 0%, #250707 100%)',
-                  }}
-                />
+                <img height={200} borderRadius={4} src={matchData.photo} />
                 <Stack
                   direction="column"
                   spacing={2}
@@ -119,7 +111,6 @@ export default function Bucket() {
                   <Typography variant="h7" color="white">
                     {matchData.age}
                   </Typography>
-                  
                 </Stack>
               </Stack>
             </Grid>
@@ -127,5 +118,5 @@ export default function Bucket() {
         </Grid>
       </Stack>
     </Box>
-  );
+  )
 }
