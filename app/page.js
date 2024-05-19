@@ -51,7 +51,23 @@ export default function Home() {
       <Box bgcolor={"#e59e45"} display={"flex"} flexDirection={"column"} 
             width={"100vw"} height={"auto"} justifyContent={"center"} 
             alignItems={"center"} style={{ paddingTop: '10%'}}>
-        <img width={"350px"} height={"auto"} src="/bobabae_logo.png" alt="logo" />
+        <img width={"350px"} height={"auto"} src="/bobabae_logo.png" alt="logo" 
+          style={{
+            animation: 'floatUpDown 2s infinite alternate',
+          }}
+        />
+
+          <style jsx>{`
+            @keyframes floatUpDown{
+              0%{
+                transform: translateY(0);
+              }
+              100%{
+                transform: translateY(-30px);
+              }
+            }
+          `}</style>
+
         <Typography variant="h3" gutterBottom>
           Bobabae
         </Typography>
